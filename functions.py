@@ -6,13 +6,13 @@ def create_csv_files():
     cwd = os.getcwd()
     # Create bought.csv if it doesn't exist yet.
     if not os.path.exists(cwd+'/bought.csv'):
-        with open(cwd+'/bought.csv', 'wb') as f:
+        with open(cwd+'/bought.csv', 'w') as f:
             writer = csv.writer(f)
             description_row = ['id','product_name','buy_date','buy_price','expiration_date']
             writer.writerow(description_row)
     # Create sold.csv if it doesn't exist yet.
     if not os.path.exists(cwd+'/sold.csv'):
-        with open(cwd+'/sold.csv', 'wb') as f:
+        with open(cwd+'/sold.csv', 'w') as f:
             writer = csv.writer(f)
             description_row = ['id','bought_id','sell_date','sell_price']
             writer.writerow(description_row)
@@ -35,7 +35,7 @@ def create_date_file():
     path = cwd + '/date.txt'
     # Create bought.csv if it doesn't exist yet.
     if not os.path.exists(path):
-        with open(path, 'wb') as f:
+        with open(path, 'w') as f:
             f.write(date.today().strftime("%Y/%m/%d"))
             
 def read_date():
@@ -50,7 +50,7 @@ def increase_date(amount):
     delta =  timedelta(days=amount)
     new_date = current_date + timedelta(days=amount)
     print('newdate: ', new_date)
-    with open('date.txt', 'wb') as f:
+    with open('date.txt', 'w') as f:
         f.write(date.today().strftime("%Y/%m/%d"))
     
 def adderFunc(n1, n2):
