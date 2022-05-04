@@ -28,7 +28,28 @@ def read_csv_file(filename):
     return {'header': header, 'rows': rows} 
 
 def print_table(table):
+    print(table)
     print(tabulate(table['rows'], table['header']))
+
+def report_inventory(bought, sold, inventory_date):
+    products_bought = {}    # empty dictionary, add product name: [amount] # only add products up to date and that are not expired
+    products_sold = {}
+    header = ['product_name','count']
+
+    # first get all the type of products bought
+    for row in bought:
+        if row[1] in products_bought:
+            products_bought[row[1]] += 1
+        else:
+            products_bought[row[1]] = 1
+            
+    # convert numbers values to strings, such that print_table will work
+    products_as_list = []
+    for keys in products_bought:
+        products_as_list.append([keys, str(products_bought[keys])])
+    
+    print(products_as_list)
+    print_table({'header': header, 'rows': products_as_list})
     
 def update_csv_file(filename, table):
     cwd = os.getcwd()

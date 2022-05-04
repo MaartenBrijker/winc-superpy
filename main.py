@@ -1,6 +1,6 @@
 # Imports
 import argparse
-from functions import create_csv_files, buy_item, read_csv_file, print_table, valid_date, update_csv_file, create_date_file, get_date, increase_date, adderFunc
+from functions import create_csv_files, report_inventory, buy_item, read_csv_file, print_table, valid_date, update_csv_file, create_date_file, get_date, increase_date, adderFunc
 from parser import my_parser
 from datetime import date, datetime, timedelta
 
@@ -16,7 +16,6 @@ __human_name__ = "superpy"
 #( ) REPORT REVENUE TODAY
 #( ) REPORT REVENUE YESTERDAY
 #(•) ADVANCE TIME
-
 
 # Your code below this line.
 def main():
@@ -38,6 +37,7 @@ def main():
             if args.now:
                 table = read_csv_file('bought.csv')
                 print_table(table)
+                report_inventory(table['rows'], None, 'today')
             elif args.yesterday:
                 pass
             else:

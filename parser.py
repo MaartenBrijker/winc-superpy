@@ -11,7 +11,6 @@ def my_parser():
     buy = subparser.add_parser('buy')
     buy.set_defaults(function=buy)
     buy.add_argument('--product-name', type=str, help='Add name of product, in lowercase')
-    # buy.add_argument('--count', type=int, help='Add name of product, in lowercase')
     buy.add_argument('--price', type=float, help='Add price of product, as float')
     buy.add_argument('--expiration-date', type=str, help='Add expiration date of product, as yyyy-mm-dd')
     
