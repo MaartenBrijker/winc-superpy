@@ -1,6 +1,7 @@
 import os
 import csv
 from datetime import date, datetime, timedelta
+from tabulate import tabulate
 
 def create_csv_files():
     cwd = os.getcwd()
@@ -24,11 +25,25 @@ def read_csv_file(filename):
         header = next(csvreader)
         for row in csvreader:
             rows.append(row)
-    print(header)
-    print(rows)     
+    return {'header': header, 'rows': rows} 
+
+def print_table(table):
+    print(tabulate(table['rows'], table['header']))
     
-def append_csv_file(filename, item):
-    pass
+def update_csv_file(filename, table):
+    cwd = os.getcwd()
+    path = cwd+filename
+    print(path)
+    if os.path.exists(filename):
+        with open(filename, 'w') as f:
+            writer = csv.writer(f)
+            # description_row = ['id','product_name','buy_date','buy_price','expiration_date']
+            # writer.writerow(description_row)
+            writer.writerow(table['header'])
+            for row in table['rows']:
+                writer.writerow(row)
+    else:
+        print('ERROR: bought.csv does not exist')
        
 def create_date_file():
     cwd = os.getcwd()
@@ -38,20 +53,35 @@ def create_date_file():
         with open(path, 'w') as f:
             f.write(date.today().strftime("%Y/%m/%d"))
             
-def read_date():
+def get_date():
     # cwd = os.getcwd()
     with open('date.txt', 'r') as f:
         line = f.readline()
-        print(line)
         return line
 
 def increase_date(amount):
-    current_date = datetime.strptime(read_date(), "%Y/%m/%d")
-    delta =  timedelta(days=amount)
+    current_date = datetime.strptime(get_date(), "%Y/%m/%d")
     new_date = current_date + timedelta(days=amount)
-    print('newdate: ', new_date)
     with open('date.txt', 'w') as f:
-        f.write(date.today().strftime("%Y/%m/%d"))
+        f.write(new_date.strftime("%Y/%m/%d"))
     
 def adderFunc(n1, n2):
     return n1 + n2
+
+def valid_date(date):
+    try:
+        datetime.strptime(date, '%Y/%m/%d')
+        return True
+    except ValueError:
+        return False
+
+def buy_item(new_item):
+    date = get_date()
+    table = read_csv_file('bought.csv')
+    id = len(table['rows'])
+    new_item.insert(0, id)
+    new_item.insert(2, date)
+    table['rows'].append(new_item)
+    update_csv_file('bought.csv', table)
+    print_table(read_csv_file('bought.csv'))
+    print('OK')         
