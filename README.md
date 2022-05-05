@@ -4,6 +4,17 @@ The application stores accounts of a shop's purchases and sales. It can calculat
 
 The application consists of 3 files: main.py, parser.py and functions.py.
 
+# Main.py
+This is the main part of the application that needs to be called to run the program. 
+The program first checks if the necessary csv and txt files have been created, otherwise creates them.
+Then it calls the parser function to receive the parser commands.
+
+It parses the commands and/or arguments and calls the relevant functions from functions.py with the data provided by the user. 
+Also if any arguments or commands are invalid or miss info it alerts the user by printing error messages.
+
+# Functions.py
+This file holds all the functions of the program. It gets called from Main.py. Every function has a clear description in the comments.
+
 # Parser.py:
 Makes use of the argparse module to handle different commands and arguments.
 The structure of the commands is as follows.
@@ -31,17 +42,6 @@ The Report command has it's own sub-parser running the following three commands:
 (c) profit, has 3 optional flags, either --today or --yesterday, and one optional argument: a date STR.
 
 Parser.py runs the parser as a function that can be called from main.py, and return the parsed arguments.
-
-# Main.py
-This is the main part of the application that needs to be called to run the program. 
-The program first checks if the necessary csv and txt files have been created, otherwise creates them.
-Then it calls the parser function to receive the parser commands.
-
-It parses the commands and/or arguments and calls the relevant functions from functions.py with the data provided by the user. 
-Also if any arguments or commands are invalid or miss info it alerts the user by printing error messages.
-
-# Functions.py
-This file holds all the functions of the program. It gets called from Main.py. Every function has a clear description in the comments.
 
 # CSV and TXT files
 The program creates 3 different files in your working directory: bought.csv, sold.csv and date.txt.
