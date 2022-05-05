@@ -8,10 +8,6 @@ from datetime import date, datetime, timedelta
 __winc_id__ = "a2bc36ea784242e4989deb157d527ba0"
 __human_name__ = "superpy"
 
-### COMMANDS
-# python3 main.py report inventory --now
-# python3 main.py buy --product-name Kiwi --price 20.0 --expiration-date 2022/02/03
-
 def main():
     # request the parser from parser.py
     args = my_parser()
