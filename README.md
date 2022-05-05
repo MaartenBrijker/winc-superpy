@@ -65,3 +65,15 @@ You can run the program with the following commands:
 #### $ python3 main.py report inventory --now
 #### $ python3 main.py report profit --yesterday
 #### $ python3 main.py report revenue --date 2022/03/07
+
+# Notable code
+In my functions.py I implemented a few things I find notable.
+
+(1) the report_inventory() function has a 'switch' element. A string you can feed it, either 'print' or 'return' that tells the function whether print the inventory as a table (for the report inventory command line command) or to return it as an object to be used in other functions of the code (such as calculation profit)
+
+(2) I made sure in main.py that everytime the program runs it checks whether the CSV and TXT files are present, otherwise creates them. This makes sure you can run the code without having those files.
+
+(3) Something else I implemented is making sure you can only buy products that are not expired yet.
+
+(4) I put the the parser in a separate file, making the code much cleaner and clearer.
+
