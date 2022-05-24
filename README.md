@@ -35,7 +35,7 @@ The Parser takes either the -advance-time argument or one of the following three
 
 The Report command has it's own sub-parser running the following three commands: inventory, revenue or profit.
 
-(a) inventory, has 2 optional flags, either --now or --yesterday.
+(a) inventory, has 3 optional flags, either --now or --yesterday and --export.
 
 (b) revenue, has 3 optional flags, either --today or --yesterday, and one optional argument: a date STR.
 
@@ -63,5 +63,7 @@ You can run the program with the following commands:
 #### $ python3 main.py buy --product-name Kiwi --price 20.0 --expiration-date 2022/02/03
 #### $ python3 main.py sell --product-name Kiwi --price 20.0 --expiration-date 2022/02/03
 #### $ python3 main.py report inventory --now
+#### $ python3 main.py report inventory --yesterday --export
 #### $ python3 main.py report profit --yesterday
 #### $ python3 main.py report revenue --date 2022/03/07
+#### $ python3 main.py report revenue --date 2022/02

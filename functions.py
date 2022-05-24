@@ -45,7 +45,6 @@ def report_inventory(bought, sold, check_date, switch):
     
     # first get all the type and amounts of products bought
     for row in bought:
-        # print(row)
         # if expiry date is not expired and if buy date is not in the future 
         if not is_expired(row[4], check_date) and not date_in_future(row[2], check_date):
             if row[1] in products_bought:
@@ -67,36 +66,79 @@ def report_inventory(bought, sold, check_date, switch):
     
     if switch == 'return':
         return inventory
-    if switch == 'print':        
-        # convert numbers values to strings, such that print_table will work
-        inventory_as_list = []
-        for keys in inventory:
-            inventory_as_list.append([keys, str(inventory[keys])])
-        print_table({'header': header, 'rows': inventory_as_list})
 
+    # convert numbers values to strings, such that print_table will work
+    inventory_as_list = []
+    for keys in inventory:
+        inventory_as_list.append([keys, str(inventory[keys])])
+
+    if switch == 'print': 
+        print_table({'header': header, 'rows': inventory_as_list})
+ 
+    if switch == 'export':  
+        clean_date = check_date.replace("/", "-")   #remove the slash from the filename
+        filename = f"inventory_report_{clean_date}.csv"
+        csv_name = os.path.join(CWD, filename)
+        with open(csv_name, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            for row in inventory_as_list:   #write inventory rows to the CSV
+                writer.writerow(row)
+            print(f"Inventory report for {check_date} succesfully exported to '{filename}'.")
+
+    
 # reports revenue for the specified date
-def report_revenue(sold, check_date):
-    revenue = 0.0
-    for row in sold:
-        if row[2] == check_date:    # only add the sell-price of produc if the sold_date matches
-            revenue += float(row[3])
-    print(f"{check_date}'s revenue: €{revenue}")
+def report_revenue(sold, check_date, timeframe):
+    if timeframe == 'day':
+        revenue = 0.0
+        for row in sold:
+            if row[2] == check_date:    # only add the sell-price of product if the sold_date matches
+                revenue += float(row[3])
+        print(f"{check_date}'s revenue: €{revenue}")
+    elif timeframe == 'month':
+        check_year, check_month = check_date.split('/')
+        revenue = 0.0
+        for row in sold:
+            entry_year, entry_month, entry_day = row[2].split('/')
+            if check_year == entry_year and check_month == entry_month:    # only add the sell-price of product if the sold_date matches in year and month
+                revenue += float(row[3])
+        print(f"{check_year}'s revenue over month {check_month}: €{revenue}")
 
 # calculates the amount sold and bought on specified dates, reports back profit
-def report_profit(bought, sold, check_date):
-    amount_sold = 0.0
-    for row in sold:
-        if row[2] == check_date:
-            amount_sold += float(row[3])
-    
-    amount_bought = 0.0
-    for row in bought:
-        if row[2] == check_date:
-            amount_bought += float(row[3])
-            
-    profit = amount_sold - amount_bought
-    print(f"{check_date}'s profit: €{profit}")
+def report_profit(bought, sold, check_date, timeframe):
+    if timeframe == 'day':
+        amount_sold = 0.0
+        for row in sold:
+            if row[2] == check_date:
+                amount_sold += float(row[3])*100
+        
+        amount_bought = 0.0
+        for row in bought:
+            if row[2] == check_date:
+                amount_bought += float(row[3])*100
+                
+        profit = (amount_sold - amount_bought)/100
+        print(f"{check_date}'s profit: €{profit}")
 
+    elif timeframe == 'month':
+        check_year, check_month = check_date.split('/')
+        amount_sold = 0.0
+        for row in sold:
+            # print("row: ", row)
+            entry_year, entry_month, entry_day = row[2].split('/')
+            if check_year == entry_year and check_month == entry_month:    # only add the sell-price of product if the sold_date matches in year and month
+                amount_sold += float(row[3])*100
+
+        amount_bought = 0.0
+        for row in bought:
+            # print("row: ", row)
+            entry_year, entry_month, entry_day = row[2].split('/')
+            if check_year == entry_year and check_month == entry_month:    # only add the buy-price of product if the bought_date matches in year and month
+                amount_bought += float(row[3])*100
+
+        profit = (float(amount_sold) - float(amount_bought))/100
+        print(f"{check_year}'s profit over month {check_month}: €{profit}")
+        
 # checks if the product is expired, returns a boolean
 def is_expired(prod_date, check_date):
     expiry_date = datetime.strptime(prod_date, '%Y/%m/%d')
