@@ -71,7 +71,7 @@ You can run the program with the following commands:
 # Notable code
 In my functions.py I implemented a few things I find notable.
 
-(1) the report_inventory() function has a 'switch' element. A string you can feed it, either 'print' or 'return' that tells the function whether print the inventory as a table (for the report inventory command line command) or to return it as an object to be used in other functions of the code (such as calculation profit)
+(1) the report_inventory() function has a 'switch' element. A string you can feed it, either 'print', 'return' or 'export' that tells the function whether print the inventory as a table (for the report inventory command line command) or to return it as an object to be used in other functions of the code (such as calculation profit), or to export it to a csv file.
 
 (2) I made sure in main.py that everytime the program runs it checks whether the CSV and TXT files are present, otherwise creates them. This makes sure you can run the code without having those files.
 
